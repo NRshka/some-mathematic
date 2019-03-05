@@ -17,7 +17,12 @@ typedef struct {
 
 Matrix* getMatrix(size_t rows, size_t columns);
 Matrix* getZerosMatrix(size_t rows, size_t columns);
+//Возвращает единичную квадратную матрицу
+Matrix* getOnesMatrix(size_t n);
 Matrix* ATA(Matrix* A);
+//Нахождение обратной матрицы методом Гаусса
+Matrix* InverseGauss(Matrix* A);
+void print(Matrix* m);
 }
 
 #endif
