@@ -68,9 +68,14 @@ Matrix* Linear::InverseGauss(Matrix* A) {
 
 	for (size_t i = 0; i < A->rows; i++) {
 		double divider = A->matrix[i*A->columns + i];//то, на что делим
-		for (size_t j = i; j < A->columns; j++)
+		for (size_t j = i; j < A->columns; j++) {
 			A->matrix[i*A->columns + j] /= divider;
-		
+		}
+		//TODO: перенести этот цикл в верхний, хтя бы частичн итерации будут выполняться
+		//на больших матрицах может получиться экономия
+		for (size_t j = 0; j < E->columns; j++)
+			E->matrix[j] /= divider;
+
 		//TODO: в последней итерации цикла не происхдит вычислений, т.к. матрица уже вычислена;
 		//разбраться, можно ли сократить
 		for (size_t row = 0; row < A->rows; row++) {
