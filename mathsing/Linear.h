@@ -22,6 +22,7 @@ Matrix* getOnesMatrix(size_t n);
 Matrix* ATA(Matrix* A);
 //Нахождение обратной матрицы методом Гаусса
 Matrix* InverseGauss(Matrix* A);
+void print(Matrix* m);
 }
 
 #endif

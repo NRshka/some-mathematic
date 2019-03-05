@@ -1,4 +1,7 @@
 #include "Linear.h"
+#include <iostream>
+
+using namespace std;
 
 using namespace Linear;
 //TODO: что лучще - кидать ошибку или возвращать нуль? с++ или с?
@@ -50,18 +53,34 @@ Matrix* Linear::ATA(Matrix* A) {
 	return res;
 }
 
+void Linear::print(Matrix* m) {
+	for (size_t i = 0; i < m->columns*m->rows; i++) {
+		cout << m->matrix[i] << ' ';
+		if ((i + 1) % m->rows == 0)
+			cout << endl;
+	}
+}
+
 Matrix* Linear::InverseGauss(Matrix* A) {
 	Matrix* E = getOnesMatrix(A->rows);
 	if (E == NULL)
 		return NULL;
 
 	for (size_t i = 0; i < A->rows; i++) {
-		double divider = A->matrix[i*A->columns];//то, на что делим
-		for (size_t j = 0; j < A->columns; j++)
+		double divider = A->matrix[i*A->columns + i];//то, на что делим
+		for (size_t j = i; j < A->columns; j++)
 			A->matrix[i*A->columns + j] /= divider;
 		
-
+		//TODO: в последней итерации цикла не происхдит вычислений, т.к. матрица уже вычислена;
+		//разбраться, можно ли сократить
+		for (size_t row = 0; row < A->rows; row++) {
+			//пропускаем ту же самую строчку при вычитании
+			if (row == i)
+				continue;
+			for (size_t col = i; col < A->columns; col++)
+				A->matrix[row * A->columns + col] -= A->matrix[row*A->columns + i] * A->matrix[i*A->columns + col];
+		}
 	}
 
-	return NULL;
+	return A;
 }
