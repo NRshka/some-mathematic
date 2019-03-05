@@ -28,6 +28,8 @@ void print(Vector* v);
 Matrix* multiply(Matrix* a, Matrix* b);
 //Умножить матрицу на вектор
 Vector* multiply(Matrix* a, Vector* vec);
+//умножить два матрицы при том, чт вторая транспонированная
+Matrix* multiplyABT(Matrix* a, Matrix* b);
 //чистить память матрицы
 void clear_mem(Matrix* m);
 }

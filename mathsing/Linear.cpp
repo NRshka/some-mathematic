@@ -47,6 +47,7 @@ void Linear::clear_mem(Matrix* m) {
 
 Matrix* Linear::ATA(Matrix* A) {
 	Matrix* res = getZerosMatrix(A->columns, A->columns);
+	//TODO проверку на NULL ошибки
 	for (size_t i = 0; i < A->rows; i++) {
 		for (size_t j = 0; j < A->columns; j++) {
 			for(size_t k = 0; k < A->columns; k++) {
@@ -61,7 +62,7 @@ Matrix* Linear::ATA(Matrix* A) {
 void Linear::print(Matrix* m) {
 	for (size_t i = 0; i < m->columns*m->rows; i++) {
 		cout << m->matrix[i] << ' ';
-		if ((i + 1) % m->rows == 0)
+		if ((i + 1) % m->columns == 0)
 			cout << endl;
 	}
 }
@@ -148,6 +149,23 @@ Vector* Linear::multiply(Matrix* a, Vector* vec) {
 
 	for (size_t i = 0; i < a->rows*a->columns; i++)
 		res->vec[i / res->len] += a->matrix[i] * vec->vec[i%vec->len];
+
+	return res;
+}
+
+Matrix* Linear::multiplyABT(Matrix* a, Matrix* b) {
+	if (a->columns != b->columns)
+		return NULL;
+
+	Matrix* res = getZerosMatrix(a->rows, b->rows);
+	//TODO проверку на NULL ошибки
+	for (size_t i = 0; i < a->rows; i++) {
+		for (size_t j = 0; j < b->rows; j++) {
+			for (size_t k = 0; k < b->columns; k++) {
+				res->matrix[i * res->columns + j] += a->matrix[i * a->columns + k] * b->matrix[j * b->columns + k];
+			}
+		}
+	}
 
 	return res;
 }
