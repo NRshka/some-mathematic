@@ -34,7 +34,7 @@ Matrix* Linear::getOnesMatrix(size_t n) {
 	if (m == NULL)
 		return NULL;
 
-	for (size_t i = 0; i < n*n; i += n)
+	for (size_t i = 0; i < n*n; i += n + 1)
 		m->matrix[i] = 1;
 
 	return m;
@@ -66,6 +66,7 @@ Matrix* Linear::InverseGauss(Matrix* A) {
 	if (E == NULL)
 		return NULL;
 
+	print(E);
 	for (size_t i = 0; i < A->rows; i++) {
 		double divider = A->matrix[i*A->columns + i];//то, на что делим
 		for (size_t j = i; j < A->columns; j++) {
@@ -73,8 +74,9 @@ Matrix* Linear::InverseGauss(Matrix* A) {
 		}
 		//TODO: перенести этот цикл в верхний, хтя бы частичн итерации будут выполняться
 		//на больших матрицах может получиться экономия
+		//хотя это надо для E
 		for (size_t j = 0; j < E->columns; j++)
-			E->matrix[j] /= divider;
+			E->matrix[i*E->columns + j] /= divider;
 
 		//TODO: в последней итерации цикла не происхдит вычислений, т.к. матрица уже вычислена;
 		//разбраться, можно ли сократить
@@ -82,10 +84,15 @@ Matrix* Linear::InverseGauss(Matrix* A) {
 			//пропускаем ту же самую строчку при вычитании
 			if (row == i)
 				continue;
+
+			divider = A->matrix[row*A->columns + i];
 			for (size_t col = i; col < A->columns; col++)
-				A->matrix[row * A->columns + col] -= A->matrix[row*A->columns + i] * A->matrix[i*A->columns + col];
+				A->matrix[row * A->columns + col] -= divider * A->matrix[i*A->columns + col];
+			//TODO: same up^
+			for (size_t col = 0; col < E->columns; col++)
+				E->matrix[row*E->columns + col] -= divider * E->matrix[i*E->columns + col];
 		}
 	}
 
-	return A;
+	return E;
 }
