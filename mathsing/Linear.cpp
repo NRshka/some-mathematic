@@ -34,5 +34,5 @@ Matrix* Linear::ATA(Matrix* A) {
 			}
 		}
 	}
-	return NULL;
+	return res;
 }
