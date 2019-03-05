@@ -23,6 +23,8 @@ Matrix* ATA(Matrix* A);
 //Нахождение обратной матрицы методом Гаусса
 Matrix* InverseGauss(Matrix* A);
 void print(Matrix* m);
+//Умножение матриц, наивный алгоритм
+Matrix* multiply(Matrix* a, Matrix* b);
 }
 
 #endif

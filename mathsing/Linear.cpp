@@ -29,11 +29,6 @@ Matrix* Linear::getZerosMatrix(size_t rows, size_t columns) {
 	return m;
 }
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> feature/InverseMatrix
 Matrix* Linear::getOnesMatrix(size_t n) {
 	Matrix* m = getZerosMatrix(n, n);
 	if (m == NULL)
@@ -45,10 +40,6 @@ Matrix* Linear::getOnesMatrix(size_t n) {
 	return m;
 }
 
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> feature/InverseMatrix
 Matrix* Linear::ATA(Matrix* A) {
 	Matrix* res = getZerosMatrix(A->columns, A->columns);
 	for (size_t i = 0; i < A->rows; i++) {
@@ -70,12 +61,23 @@ void Linear::print(Matrix* m) {
 	}
 }
 
-Matrix* Linear::InverseGauss(Matrix* A) {
+Matrix* copy(Matrix* m) {
+	Matrix* A = (Matrix*)malloc(sizeof(Matrix));
+	A->matrix = (double*)malloc(m->rows * m->columns * sizeof(double));
+	//TODO NULL error exception
+	A->rows = m->rows;
+	A->columns = m->columns;
+	memcpy(A->matrix, m->matrix, m->rows*m->columns * sizeof(double));
+
+	return A;
+}
+
+Matrix* Linear::InverseGauss(Matrix* m) {
+	Matrix* A = copy(m);
 	Matrix* E = getOnesMatrix(A->rows);
-	if (E == NULL)
+	if (E == NULL || A == NULL)
 		return NULL;
 
-	print(E);
 	for (size_t i = 0; i < A->rows; i++) {
 		double divider = A->matrix[i*A->columns + i];//то, на что делим
 		for (size_t j = i; j < A->columns; j++) {
@@ -104,4 +106,20 @@ Matrix* Linear::InverseGauss(Matrix* A) {
 	}
 
 	return E;
+}
+
+Matrix* Linear::multiply(Matrix* a, Matrix* b) {
+	if (a->columns != b->rows)
+		return NULL;
+
+	Matrix* res = getZerosMatrix(a->rows, b->columns);
+
+	for (size_t i = 0; i < a->rows; i++) {
+		for (size_t j = 0; j < b->columns; j++) {
+			for (size_t b_row = 0; b_row < b->rows; b_row++)
+				res->matrix[i * res->columns + j] += a->matrix[i*a->columns + b_row] * b->matrix[b_row*b->columns + j];
+		}
+	}
+
+	return res;
 }
