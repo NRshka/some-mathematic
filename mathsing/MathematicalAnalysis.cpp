@@ -5,15 +5,18 @@
 
 
 double SimpsonsIntegral(double(*func)(double x), double a, double b, double n) {
-	double h = (b - a) / (2 * n);
+	double h = (b - a) / n;
 	double integral = func(a) + func(b);
 
-	//все нечётные точки
-	for (size_t i = 1; i < 2 * n; i += 2)
-		integral += 4 * func(a + h * i);
-	//все чётные точки
-	for (size_t i = 2; i < (2 * n - 1); i += 2)
-		integral += 2 * func(a + h * i);
+	double x = a + h;
+	while (x <= b) {
+		integral += 4 * func(x);
+		x += h;
+		if (x >= b)
+			break;
+		integral += 2 * func(x);
+		x += h;
+	}
 
-	return integral;
+	return (h*integral) / 3.0;
 }
