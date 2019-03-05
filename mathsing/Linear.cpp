@@ -19,9 +19,21 @@ Matrix* Linear::getZerosMatrix(size_t rows, size_t columns) {
 	Matrix* m = getMatrix(rows, columns);
 	if (m == NULL)
 		return NULL;
+
 	for (size_t i = 0; i < rows*columns; i++)
 		m->matrix[i] = 0.0;
 	
+	return m;
+}
+
+Matrix* Linear::getOnesMatrix(size_t n) {
+	Matrix* m = getZerosMatrix(n, n);
+	if (m == NULL)
+		return NULL;
+
+	for (size_t i = 0; i < n*n; i += n)
+		m->matrix[i] = 1;
+
 	return m;
 }
 
@@ -34,5 +46,22 @@ Matrix* Linear::ATA(Matrix* A) {
 			}
 		}
 	}
+
 	return res;
+}
+
+Matrix* Linear::InverseGauss(Matrix* A) {
+	Matrix* E = getOnesMatrix(A->rows);
+	if (E == NULL)
+		return NULL;
+
+	for (size_t i = 0; i < A->rows; i++) {
+		double divider = A->matrix[i*A->columns];//то, на что делим
+		for (size_t j = 0; j < A->columns; j++)
+			A->matrix[i*A->columns + j] /= divider;
+		
+
+	}
+
+	return NULL;
 }
