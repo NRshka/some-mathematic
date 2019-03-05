@@ -25,6 +25,20 @@ Matrix* Linear::getZerosMatrix(size_t rows, size_t columns) {
 	return m;
 }
 
+<<<<<<< Updated upstream
+=======
+Matrix* Linear::getOnesMatrix(size_t n) {
+	Matrix* m = getZerosMatrix(n, n);
+	if (m == NULL)
+		return NULL;
+
+	for (size_t i = 0; i < n*n; i += n + 1)
+		m->matrix[i] = 1;
+
+	return m;
+}
+
+>>>>>>> Stashed changes
 Matrix* Linear::ATA(Matrix* A) {
 	Matrix* res = getZerosMatrix(A->columns, A->columns);
 	for (size_t i = 0; i < A->rows; i++) {
