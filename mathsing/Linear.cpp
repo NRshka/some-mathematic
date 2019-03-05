@@ -40,6 +40,11 @@ Matrix* Linear::getOnesMatrix(size_t n) {
 	return m;
 }
 
+void Linear::clear_mem(Matrix* m) {
+	free(m->matrix);
+	free(m);
+}
+
 Matrix* Linear::ATA(Matrix* A) {
 	Matrix* res = getZerosMatrix(A->columns, A->columns);
 	for (size_t i = 0; i < A->rows; i++) {
@@ -59,6 +64,12 @@ void Linear::print(Matrix* m) {
 		if ((i + 1) % m->rows == 0)
 			cout << endl;
 	}
+}
+
+void Linear::print(Vector* v) {
+	for (size_t i = 0; i < v->len; i++)
+		cout << v->vec[i] << ' ';
+	cout << endl;
 }
 
 Matrix* copy(Matrix* m) {
@@ -120,6 +131,23 @@ Matrix* Linear::multiply(Matrix* a, Matrix* b) {
 				res->matrix[i * res->columns + j] += a->matrix[i*a->columns + b_row] * b->matrix[b_row*b->columns + j];
 		}
 	}
+
+	return res;
+}
+
+Vector* Linear::multiply(Matrix* a, Vector* vec) {
+	if (a->columns != vec->len)
+		return NULL;
+
+	//TODO: функцию сздания вектора или каста из одномерной матрицы с проверкой ошибок
+	Vector* res = (Vector*)malloc(sizeof(Vector));
+	res->len = vec->len;
+	res->vec = (double*)malloc(vec->len * sizeof(double));
+	for (size_t i = 0; i < res->len; i++)
+		res->vec[i] = 0.0;
+
+	for (size_t i = 0; i < a->rows*a->columns; i++)
+		res->vec[i / res->len] += a->matrix[i] * vec->vec[i%vec->len];
 
 	return res;
 }
