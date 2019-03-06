@@ -1,5 +1,6 @@
 #include "Linear.h"
 #include <iostream>
+#include <stdarg.h>
 
 using namespace std;
 
@@ -54,6 +55,10 @@ Vector* Linear::getOnesVector(size_t n) {
 void Linear::clear_mem(Matrix* m) {
 	free(m->matrix);
 	free(m);
+}
+
+void Linear::clear_mem(Vector* v1, ...) {
+
 }
 
 Matrix* Linear::ATA(Matrix* A) {

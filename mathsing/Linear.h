@@ -7,6 +7,12 @@ namespace Linear{
 typedef struct {
 	double* vec;
 	size_t len;
+	double sum() {
+		double s = 0.0;
+		for (size_t i = 0; i < len; i++)
+			s += vec[i];
+		return s;
+	}
 } Vector;
 
 typedef struct {
@@ -35,6 +41,7 @@ Vector* minus(Vector* a, Vector* b);
 Matrix* multiplyABT(Matrix* a, Matrix* b);
 //чистить память матрицы
 void clear_mem(Matrix* m);
+void clear_mem(Vector* v1, ...);
 }
 
 #endif
