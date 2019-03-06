@@ -57,8 +57,10 @@ void Linear::clear_mem(Matrix* m) {
 	free(m);
 }
 
-void Linear::clear_mem(Vector* v1, ...) {
-
+void Linear::clear_mem(size_t count, Vector* v1, ...) {
+	va_list vectors;
+	va_start(vectors, v1);
+	//for()
 }
 
 Matrix* Linear::ATA(Matrix* A) {

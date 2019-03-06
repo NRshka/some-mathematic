@@ -41,7 +41,7 @@ Vector* minus(Vector* a, Vector* b);
 Matrix* multiplyABT(Matrix* a, Matrix* b);
 //чистить память матрицы
 void clear_mem(Matrix* m);
-void clear_mem(Vector* v1, ...);
+void clear_mem(size_t count, Vector* v1, ...);
 }
 
 #endif
