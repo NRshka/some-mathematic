@@ -19,6 +19,7 @@ Matrix* getMatrix(size_t rows, size_t columns);
 Matrix* getZerosMatrix(size_t rows, size_t columns);
 //¬озвращает единичную квадратную матрицу
 Matrix* getOnesMatrix(size_t n);
+Vector* getOnesVector(size_t n);
 Matrix* ATA(Matrix* A);
 //Ќахождение обратной матрицы методом √аусса
 Matrix* InverseGauss(Matrix* A);
@@ -29,6 +30,7 @@ Matrix* multiply(Matrix* a, Matrix* b);
 //”множить матрицу на вектор
 Vector* multiply(Matrix* a, Vector* vec);
 Vector* multiply(Vector*vec, Matrix* a);
+Vector* minus(Vector* a, Vector* b);
 //умножить два матрицы при том, чт втора€ транспонированна€
 Matrix* multiplyABT(Matrix* a, Matrix* b);
 //чистить пам€ть матрицы

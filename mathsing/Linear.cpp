@@ -40,6 +40,17 @@ Matrix* Linear::getOnesMatrix(size_t n) {
 	return m;
 }
 
+Vector* Linear::getOnesVector(size_t n) {
+	Vector* v = (Vector*)malloc(sizeof(Vector));
+	v->vec = (double*)malloc(n* sizeof(double));
+
+	if (!(v && v->vec))
+		return NULL;
+
+	for (size_t i = 0; i < n; i++)
+		v->vec[i] = 0.0;
+}
+
 void Linear::clear_mem(Matrix* m) {
 	free(m->matrix);
 	free(m);
@@ -166,6 +177,22 @@ Vector* Linear::multiply(Vector* vec, Matrix* a) {
 
 	for (size_t i = 0; i < a->rows*a->columns; i++)
 		res->vec[i % res->len] += a->matrix[i] * vec->vec[i / vec->len];
+
+	return res;
+}
+
+Vector* Linear::minus(Vector* a, Vector* b) {
+	if (a->len != b->len)
+		return NULL;
+
+	Vector* res = (Vector*)malloc(sizeof(Vector));
+	res->len = a->len;
+	res->vec = (double*)malloc(res->len * sizeof(double));
+	if (res == NULL || res->vec == NULL)
+		return NULL;
+
+	for (size_t i = 0; i < a->len; i++)
+		res->vec[i] = a->vec[i] - b->vec[i];
 
 	return res;
 }
