@@ -70,10 +70,10 @@ void Linear::clear_mem(size_t count, Vector* v1, ...) {
 Matrix* Linear::ATA(Matrix* A) {
 	Matrix* res = getZerosMatrix(A->columns, A->columns);
 	//TODO проверку на NULL ошибки
-	for (size_t i = 0; i < A->rows; i++) {
+	for (size_t i = 0; i < A->columns; i++) {
 		for (size_t j = 0; j < A->columns; j++) {
-			for(size_t k = 0; k < A->columns; k++) {
-				res->matrix[i * res->columns + j] += A->matrix[i * A->columns + k] * A->matrix[j * A->columns + k];
+			for(size_t k = 0; k < A->rows; k++) {
+				res->matrix[i * res->columns + j] += A->matrix[k * A->columns + i] * A->matrix[k * A->columns + j];
 			}
 		}
 	}
@@ -112,6 +112,7 @@ Matrix* Linear::InverseGauss(Matrix* m) {
 	if (E == NULL || A == NULL)
 		return NULL;
 
+	
 	for (size_t i = 0; i < A->rows; i++) {
 		double divider = A->matrix[i*A->columns + i];//то, на что делим
 		for (size_t j = i; j < A->columns; j++) {
