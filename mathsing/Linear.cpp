@@ -59,6 +59,53 @@ NMatrix* Linear::getNMatrix(size_t count_dim, ...) {
 	return nm;
 }
 
+NMatrix* Linear::getZerosNMatrix(size_t count_dim, ...) {
+	NMatrix* nm = (NMatrix*)malloc(sizeof(NMatrix));
+	nm->count_dim = count_dim;
+	nm->counts = (size_t*)malloc(count_dim * sizeof(size_t));
+
+	va_list vectors;
+	va_start(vectors, count_dim);
+	//count of numbers
+	size_t length = 1;
+	for (; count_dim > 0; count_dim--) {
+		size_t d = va_arg(vectors, size_t);
+		length *= d;
+		nm->counts[nm->count_dim - count_dim] = d;
+	}
+	//fill with 0
+	nm->matrix = (double*)malloc(length * sizeof(double));
+	memset(nm->matrix, 0, length);
+
+	return nm;
+}
+
+NMatrix* Linear::getOnesNMatrix(size_t count_dim, size_t dims) {
+	NMatrix* nm = (NMatrix*)malloc(sizeof(NMatrix));
+	nm->count_dim = count_dim;
+	nm->counts = (size_t*)malloc(count_dim * sizeof(size_t));
+	for (size_t i = 0; i < count_dim; i++)
+		nm->counts[i] = dims;
+
+	//fill with 0
+	size_t length = powl(dims, count_dim);
+	nm->matrix = (double*)malloc(length * sizeof(double));
+	memset(nm->matrix, 0, length);
+
+	size_t* degrees = (size_t*)malloc(count_dim * sizeof(size_t));
+	for (size_t i = 0; i < count_dim; i++)
+		degrees[i] = powl(dims, count_dim - i - 1);
+	for (size_t i = 0; i < dims; i++) {
+		size_t delta = 0;
+		for (size_t j = 0; j < count_dim; j++)
+			delta += degrees[j] * i;
+		nm->matrix[delta] = 1.0;
+	}
+
+	free(degrees);
+	return nm;
+}
+
 Vector* Linear::getOnesVector(size_t n) {
 	Vector* v = (Vector*)malloc(sizeof(Vector));
 	v->vec = (double*)malloc(n* sizeof(double));
