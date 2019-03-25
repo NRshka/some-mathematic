@@ -20,9 +20,17 @@ typedef struct {
 	size_t rows;
 	size_t columns;
 } Matrix;
+typedef struct{
+	size_t count_dim;
+	size_t* counts;
+	double* matrix;
+} NMatrix;
 
 Matrix* getMatrix(size_t rows, size_t columns);
 Matrix* getZerosMatrix(size_t rows, size_t columns);
+NMatrix* getNMatrix(size_t count_dim, ...);
+NMatrix* getZerosNMatrix(size_t count_dim, ...);
+NMatrix* getOnesNMatrix(size_t count_dim, size_t dims);
 //¬озвращает единичную квадратную матрицу
 Matrix* getOnesMatrix(size_t n);
 Vector* getOnesVector(size_t n);
