@@ -41,6 +41,24 @@ Matrix* Linear::getOnesMatrix(size_t n) {
 	return m;
 }
 
+NMatrix* Linear::getNMatrix(size_t count_dim, ...) {
+	NMatrix* nm = (NMatrix*)malloc(sizeof(NMatrix));
+	nm->count_dim = count_dim;
+	nm->counts = (size_t*)malloc(count_dim * sizeof(size_t));
+
+	va_list vectors;
+	va_start(vectors, count_dim);
+	size_t length = 0;
+	for (; count_dim > 0; count_dim--) {
+		size_t d = va_arg(vectors, size_t);
+		length += d;
+		nm->counts[nm->count_dim - count_dim] = d;
+	}
+	nm->matrix = (double*)malloc(length * sizeof(double));
+
+	return nm;
+}
+
 Vector* Linear::getOnesVector(size_t n) {
 	Vector* v = (Vector*)malloc(sizeof(Vector));
 	v->vec = (double*)malloc(n* sizeof(double));
@@ -50,6 +68,8 @@ Vector* Linear::getOnesVector(size_t n) {
 
 	for (size_t i = 0; i < n; i++)
 		v->vec[i] = 0.0;
+
+	return v;
 }
 
 void Linear::clear_mem(Matrix* m) {
